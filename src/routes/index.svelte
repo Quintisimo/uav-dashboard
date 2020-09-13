@@ -1,6 +1,6 @@
 <script lang="ts">
-  import ButtonWrapper from './Components/ButtonWrapper.svelte'
-  import Readings from './Components/Readings.svelte'
+  import ButtonWrapper from '../components/ButtonWrapper.svelte'
+  import Readings from '../components/Readings.svelte'
 
   let fakeTarget = [
     {
