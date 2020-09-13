@@ -1,41 +1,42 @@
+declare module '@sapper/app'
+declare module '@sapper/server'
+declare module '@sapper/service-worker'
+
 declare module '@sapper/app' {
-  // from sapper/runtime/src/app/types.ts
-  // sapper doesn't export its types yet
-  interface Redirect {
+  export interface Redirect {
     statusCode: number
     location: string
   }
-  // end
 
-  function goto(href: string, opts = { replaceState: false }): Promise<unknown>
-  function prefetch(
+  export function goto(
+    href: string,
+    opts: { noscroll?: boolean; replaceState?: boolean }
+  ): Promise<void>
+  export function prefetch(
     href: string
   ): Promise<{ redirect?: Redirect; data?: unknown }>
-  function prefetchRoutes(pathnames: string[]): Promise<unknown>
-  function start(opts: { target: Node }): Promise<unknown>
-  const stores: () => unknown
-
-  export { goto, prefetch, prefetchRoutes, start, stores }
+  export function prefetchRoutes(pathnames: string[]): Promise<void>
+  export function start(opts: { target: Node }): Promise<void>
+  export const stores: () => unknown
 }
 
 declare module '@sapper/server' {
-  import { RequestHandler } from 'express'
+  import { Handler, Request, Response } from 'express'
 
-  interface MiddlewareOptions {
-    session?: (req: Express.Request, res: Express.Response) => unknown
-    ignore?: unknown
+  export type Ignore = string | RegExp | ((uri: string) => boolean) | Ignore[]
+
+  export interface MiddlewareOptions {
+    session?: (req: Request, res: Response) => unknown
+    ignore?: Ignore
   }
 
-  function middleware(opts: MiddlewareOptions = {}): RequestHandler
-
-  export { middleware }
+  export function middleware(opts: MiddlewareOptions): Handler
 }
 
 declare module '@sapper/service-worker' {
-  const timestamp: number
-  const files: string[]
-  const shell: string[]
-  const routes: { pattern: RegExp }[]
-
-  export { timestamp, files, files as assets, shell, routes }
+  export const timestamp: number
+  export const files: string[]
+  export const assets: string[]
+  export const shell: string[]
+  export const routes: Array<{ pattern: RegExp }>
 }
