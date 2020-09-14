@@ -1,6 +1,14 @@
 <script lang="ts">
+  import io from 'socket.io-client'
   import ButtonWrapper from '../components/ButtonWrapper.svelte'
   import Readings from '../components/Readings.svelte'
+
+  // @ts-ignore
+  const socket = io()
+
+  socket.on('server-msg', (msg: string) => console.log(msg))
+
+  socket.emit('client-msg', 'Hello from client')
 
   let fakeTarget = [
     {
