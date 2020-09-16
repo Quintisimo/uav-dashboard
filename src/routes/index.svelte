@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script context="module">
   export async function preload() {
     const res = await this.fetch('api/initial')
     const json = await res.json()
