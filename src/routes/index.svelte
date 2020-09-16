@@ -1,14 +1,25 @@
+<script context="module" lang="ts">
+  export async function preload() {
+    const res = await this.fetch('api/initial')
+    const json = await res.json()
+    return { data: json }
+  }
+</script>
+
 <script lang="ts">
   import io from 'socket.io-client'
   import ButtonWrapper from '../components/ButtonWrapper.svelte'
   import Readings from '../components/Readings.svelte'
 
-  // @ts-ignore
+  export let data: object
+
   const socket = io()
 
-  socket.on('server-msg', (msg: string) => console.log(msg))
+  socket.on('row', (data: { Text: string }) => {
+    testData = [...testData, data]
+  })
 
-  socket.emit('client-msg', 'Hello from client')
+  let testData: { Text: string }[] = []
 
   let fakeTarget = [
     {
@@ -96,7 +107,12 @@
 
 <main>
   <div class="cols">
-    <div class="temp">Image</div>
+    <div class="temp">
+      {JSON.stringify(data)}
+      {#each testData as item}
+        <p>{item.Text}</p>
+      {/each}
+    </div>
     <div class="rows">
       <ButtonWrapper />
       <div class="temp">Graphs</div>
