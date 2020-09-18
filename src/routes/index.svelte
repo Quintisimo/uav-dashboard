@@ -1,8 +1,8 @@
 <script context="module">
   export async function preload() {
     const res = await this.fetch('api/initial')
-    const json = await res.json()
-    return { data: json }
+    const preloadData = await res.json()
+    return { preloadData }
   }
 </script>
 
@@ -10,60 +10,17 @@
   import io from 'socket.io-client'
   import ButtonWrapper from '../components/ButtonWrapper.svelte'
   import Readings from '../components/Readings.svelte'
+  import type { Data, PreloadData } from '../typings/data'
 
-  export let data: object
+  export let preloadData: PreloadData
+  let averageData = preloadData.average
+  let latestData = preloadData.latest
 
   const socket = io()
 
-  socket.on('row', (data: { Text: string }) => {
-    testData = [...testData, data]
+  socket.on('row', (data: Data) => {
+    latestData = data
   })
-
-  let testData: { Text: string }[] = []
-
-  let fakeTarget = [
-    {
-      TYPE: 'A',
-      TEMPERATURE: '20 C',
-      HUMIDITY: '20%',
-      LIGHT: '1000 Lux',
-      NOISE: '100 Dec',
-      PRESSURE: '900 hPa',
-    },
-    {
-      TYPE: 'B',
-      TEMPERATURE: '20 C',
-      HUMIDITY: '20 %',
-      LIGHT: '1000 Lux',
-      NOISE: '100 Dec',
-      PRESSURE: '900 hPa',
-    },
-  ]
-
-  let fakeGas = [
-    {
-      'CARBON MONOXIDE': '100 PPM',
-      'NITROGEN DIOXIDE': '5 PPM',
-      ETHINOL: '200 PPM',
-      HYDROGEN: '500 PPM',
-    },
-    {
-      PROPANE: '100 PPM',
-      'ISO,-BUTANE': '50 PPM',
-      AMMONIA: '200 PPM',
-      METHANE: '300 PPM',
-    },
-  ]
-
-  let fakeCurrent = [
-    {
-      TEMPERATURE: '20 C',
-      HUMIDITY: '20 %',
-      LIGHT: '100 Lux',
-      NOISE: '100 Dec',
-      PRESSURE: '900 hPa',
-    },
-  ]
 
   let fakeLocation = [
     {
@@ -98,30 +55,19 @@
     display: grid;
     grid-template-rows: 70px 1fr;
   }
-
-  .temp {
-    border: 2px red dotted;
-    background-color: aqua;
-  }
 </style>
 
 <main>
   <div class="cols">
-    <div class="temp">
-      {JSON.stringify(data)}
-      {#each testData as item}
-        <p>{item.Text}</p>
-      {/each}
-    </div>
     <div class="rows">
       <ButtonWrapper />
       <div class="temp">Graphs</div>
     </div>
   </div>
   <div class="readings">
-    <Readings title="GAS LEVELS" readings={fakeGas} />
-    <Readings title="AVERAGE TARGET READINGS" readings={fakeTarget} />
-    <Readings title="CURRENT READINGS" readings={fakeCurrent} />
+    <Readings title="GAS LEVELS" readings={latestData.gas} />
+    <Readings title="AVERAGE TARGET READINGS" readings={averageData.readings} />
+    <Readings title="CURRENT READINGS" readings={latestData.readings} />
     <Readings title="UAV LOCATION (M)" readings={fakeLocation} />
   </div>
 </main>

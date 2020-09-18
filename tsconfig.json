@@ -5,8 +5,7 @@
   "exclude": ["node_modules/*", "__sapper__/*", "static/*"],
 
   "compilerOptions": {
-    "types": ["node", "@sapper"],
-    "typeRoots": ["typings"],
+    "types": ["node", "svelte", "sapper/runtime"],
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true

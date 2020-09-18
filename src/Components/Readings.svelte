@@ -1,6 +1,6 @@
 <script lang="ts">
   export let title: string
-  export let readings: object[]
+  export let readings: object[] = []
 </script>
 
 <style>
