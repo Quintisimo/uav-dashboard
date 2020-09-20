@@ -1,21 +1,23 @@
-export interface Readings {
-  'target type': string
-  temperature: number
-  humidity: number
-  light: number
-  noise: number
-  pressure: number
+export type Readings = {
+  'TARGET TYPE': 'A' | 'B'
+  TEMPERATURE: number
+  HUMIDITY: number
+  LIGHT: number
+  NOISE: number
+  PRESSURE: number
+  [key: string]: number | 'A' | 'B'
 }
 
 export interface Gas {
-  'carbon monoxide': number
-  'nitrogen dioxide': number
-  ethanol: number
-  hydrogen: number
-  propane: number
-  'iso-butane': number
-  ammonia: number
-  methane: number
+  'CARBON MONOXIDE': number
+  'NITROGEN DIOXIDE': number
+  ETHANOL: number
+  HYDROGEN: number
+  PROPANE: number
+  'ISO-BUTANE': number
+  AMMONIA: number
+  METHANE: number
+  [key: string]: number
 }
 
 export interface Data {
@@ -26,4 +28,5 @@ export interface Data {
 export interface PreloadData {
   average: Data
   latest: Data
+  all: Data
 }

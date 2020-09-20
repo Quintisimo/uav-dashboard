@@ -15,11 +15,16 @@
   export let preloadData: PreloadData
   let averageData = preloadData.average
   let latestData = preloadData.latest
+  let allData = preloadData.all
 
   const socket = io()
 
   socket.on('row', (data: Data) => {
     latestData = data
+    allData = {
+      readings: [...allData.readings, ...latestData.readings],
+      gas: [...allData.gas, ...latestData.gas],
+    }
   })
 
   let fakeLocation = [
