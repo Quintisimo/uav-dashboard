@@ -10,30 +10,24 @@
   import io from 'socket.io-client'
   import ButtonWrapper from '../components/ButtonWrapper.svelte'
   import Readings from '../components/Readings.svelte'
-  import type { Data, PreloadData } from '../typings/data'
+  import type { DataAndLoc, PreloadData } from '../typings/data'
 
   export let preloadData: PreloadData
   let averageData = preloadData.average
   let latestData = preloadData.latest
   let allData = preloadData.all
+  let latestTarget = preloadData.latest.location[0].target
 
   const socket = io()
 
-  socket.on('row', (data: Data) => {
+  socket.on('row', (data: DataAndLoc) => {
     latestData = data
     allData = {
       readings: [...allData.readings, ...latestData.readings],
       gas: [...allData.gas, ...latestData.gas],
     }
+    latestTarget = data.location[0].target
   })
-
-  let fakeLocation = [
-    {
-      X: 1.3,
-      Y: 4.5,
-      Z: 3.2,
-    },
-  ]
 </script>
 
 <style>
@@ -72,7 +66,13 @@
   <div class="readings">
     <Readings title="GAS LEVELS" readings={latestData.gas} />
     <Readings title="AVERAGE TARGET READINGS" readings={averageData.readings} />
-    <Readings title="CURRENT READINGS" readings={latestData.readings} />
-    <Readings title="UAV LOCATION (M)" readings={fakeLocation} />
+    <Readings
+      title="CURRENT READINGS"
+      readings={latestData.readings}
+      active={{ 'TARGET TYPE': latestTarget }} />
+    <Readings
+      title="UAV LOCATION (M)"
+      readings={latestData.location}
+      ignore={['target']} />
   </div>
 </main>

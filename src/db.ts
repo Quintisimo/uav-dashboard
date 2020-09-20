@@ -1,7 +1,7 @@
 import sqlite from 'better-sqlite3'
 import { join } from 'path'
 import { average, transformObj } from './util'
-import type { Readings, Gas } from './typings/data'
+import type { Readings, Gas, Location } from './typings/data'
 
 export const dbFile = join(__dirname, '../../../sql/test.db')
 
@@ -14,14 +14,14 @@ const allAirQualityQuery = `SELECT [target type] AS 'TARGET TYPE',
                           FROM Readings`
 
 const allGasQuery = `SELECT [carbon monoxide] AS 'CARBON MONOXIDE', 
-                     [nitrogen dioxide] AS 'NITROGEN DIOXIDE', 
-                     ethanol AS 'ETHANOL', 
-                     hydrogen AS 'HYDROGEN', 
-                     propane AS 'PROPANE', 
-                     [iso-butane] AS 'ISO-BUTANE', 
-                     ammonia AS 'AMMONIA', 
-                     methane AS 'METHANE' 
-                     FROM Gas`
+                    [nitrogen dioxide] AS 'NITROGEN DIOXIDE', 
+                    ethanol AS 'ETHANOL', 
+                    hydrogen AS 'HYDROGEN', 
+                    propane AS 'PROPANE', 
+                    [iso-butane] AS 'ISO-BUTANE', 
+                    ammonia AS 'AMMONIA', 
+                    methane AS 'METHANE' 
+                    FROM Gas`
 
 export function getAllReadings() {
   const db = sqlite(dbFile)
@@ -51,7 +51,8 @@ export function getAllReadings() {
   const data = {
     average: {
       readings: [averageTypeA, averageTypeB] as Readings[],
-      gas: transformObj(averageGas),
+      // TODO: correct type
+      gas: transformObj(averageGas) as Gas[],
     },
     all: {
       readings: allAirQuality,
@@ -95,12 +96,21 @@ export function getLatestReadings() {
                     FROM Gas
                     ORDER BY id DESC LIMIT 1`
 
+  const location = `SELECT x AS X, 
+                    y AS Y, 
+                    z AS Z, 
+                    target 
+                    FROM LOCATION 
+                    ORDER BY id DESC LIMIT 1`
+
   const data = {
     readings: [
       db.prepare(latestReadingsA).get(),
       db.prepare(latestReadingsB).get(),
     ].filter(Boolean) as Readings[],
+    // TODO: correct type
     gas: transformObj(db.prepare(latestGas).get()) as Gas[],
+    location: [db.prepare(location).get() || {}] as Location[],
   }
   db.close()
   return data

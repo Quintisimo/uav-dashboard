@@ -1,6 +1,15 @@
 <script lang="ts">
   export let title: string
-  export let readings: object[] = []
+  export let readings: { [key: string]: string | number }[] = []
+  export let ignore: string[] = []
+  export let active: { [key: string]: string | number }
+
+  function highlight(reading: { [key: string]: string | number }) {
+    return (
+      active !== undefined &&
+      Object.entries(active).every(([key, value]) => value === reading[key])
+    )
+  }
 </script>
 
 <style>
@@ -32,15 +41,21 @@
     font-size: 13px;
     white-space: nowrap;
   }
+
+  .active {
+    color: lightgreen;
+  }
 </style>
 
 <div class="wrapper">
   <span>{title}</span>
   <div class="content">
     {#each readings as reading}
-      <div>
+      <div class:active={highlight(reading)}>
         {#each Object.entries(reading) as [title, value]}
-          <p>{title} - {value}</p>
+          {#if !ignore.includes(title)}
+            <p>{title} - {value}</p>
+          {/if}
         {/each}
       </div>
     {/each}

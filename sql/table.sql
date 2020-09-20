@@ -21,3 +21,12 @@ CREATE TABLE 'Gas' (
 	'methane'	REAL NOT NULL,
 	PRIMARY KEY('id' AUTOINCREMENT)
 );
+
+CREATE TABLE 'Location' (
+	'id'	INTEGER NOT NULL,
+	'x'	REAL NOT NULL,
+	'y'	REAL NOT NULL,
+	'z'	REAL NOT NULL,
+	'target'	TEXT NOT NULL CHECK('target' = 'A' or 'target' = 'B'),
+	PRIMARY KEY('id' AUTOINCREMENT)
+);
