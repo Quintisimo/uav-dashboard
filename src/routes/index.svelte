@@ -10,6 +10,7 @@
   import io from 'socket.io-client'
   import ButtonWrapper from '../components/ButtonWrapper.svelte'
   import Readings from '../components/Readings.svelte'
+  import Chart from '../components/Chart.svelte'
   import type { DataAndLoc, PreloadData } from '../typings/data'
 
   export let preloadData: PreloadData
@@ -58,9 +59,10 @@
 
 <main>
   <div class="cols">
+    <div>Image</div>
     <div class="rows">
       <ButtonWrapper />
-      <div class="temp">Graphs</div>
+      <Chart {allData} />
     </div>
   </div>
   <div class="readings">

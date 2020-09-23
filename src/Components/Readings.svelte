@@ -2,11 +2,11 @@
   export let title: string
   export let readings: { [key: string]: string | number }[] = []
   export let ignore: string[] = []
-  export let active: { [key: string]: string | number }
+  export let active: { [key: string]: string | number } | null = null
 
   function highlight(reading: { [key: string]: string | number }) {
     return (
-      active !== undefined &&
+      active !== null &&
       Object.entries(active).every(([key, value]) => value === reading[key])
     )
   }

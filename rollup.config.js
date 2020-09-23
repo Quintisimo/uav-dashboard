@@ -38,6 +38,7 @@ export default {
       resolve({
         browser: true,
         dedupe: ['svelte'],
+        extensions: ['.mjs', '.js', '.json', '.node', '.ts'],
       }),
       commonjs(),
 
