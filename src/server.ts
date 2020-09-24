@@ -5,14 +5,15 @@ import compression from 'compression'
 import * as sapper from '@sapper/server'
 import io, { Socket } from 'socket.io'
 import chokidar from 'chokidar'
-import { dbFile, getLatestReadings } from './db'
+import { DB_FILE } from './server/constants'
+import { getLatestReadings } from './server/db'
 
 let socket: Socket | null = null
 
 const { PORT, NODE_ENV } = process.env
 const dev = NODE_ENV === 'development'
 
-chokidar.watch(dbFile).on('change', () => {
+chokidar.watch(DB_FILE).on('change', () => {
   if (socket !== null) socket.emit('row', getLatestReadings())
 })
 

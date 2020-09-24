@@ -1,9 +1,7 @@
 import sqlite from 'better-sqlite3'
-import { join } from 'path'
-import { average, transformObj } from './util'
-import type { Readings, Gas, Location } from './typings/data'
-
-export const dbFile = join(__dirname, '../../../sql/test.db')
+import { average, transformObj } from '../util'
+import type { Readings, Gas, Location } from '../typings/data'
+import { DB_FILE } from './constants'
 
 const allAirQualityQuery = `SELECT [target type] AS 'TARGET TYPE', 
                           temperature AS 'TEMPERATURE', 
@@ -24,7 +22,7 @@ const allGasQuery = `SELECT [carbon monoxide] AS 'CARBON MONOXIDE',
                     FROM Gas`
 
 export function getAllReadings() {
-  const db = sqlite(dbFile)
+  const db = sqlite(DB_FILE)
   const allAirQuality = db.prepare(allAirQualityQuery).all() as Readings[]
   const allGas = db.prepare(allGasQuery).all() as Gas[]
 
@@ -64,7 +62,7 @@ export function getAllReadings() {
 }
 
 export function getLatestReadings() {
-  const db = sqlite(dbFile)
+  const db = sqlite(DB_FILE)
   const latestReadingsA = `SELECT [target type] AS 'TARGET TYPE', 
                           temperature AS 'TEMPERATURE', 
                           humidity AS 'HUMIDITY', 
