@@ -11,6 +11,7 @@
   import ButtonWrapper from '../components/ButtonWrapper.svelte'
   import Readings from '../components/Readings.svelte'
   import Chart from '../components/Chart.svelte'
+  import Images from '../components/Images.svelte'
   import type { DataAndLoc, PreloadData } from '../typings/data'
 
   export let preloadData: PreloadData
@@ -18,6 +19,7 @@
   let latestData = preloadData.latest
   let allData = preloadData.all
   let latestTarget = preloadData.latest.location[0].target
+  let images = preloadData.images
 
   const socket = io()
 
@@ -59,7 +61,7 @@
 
 <main>
   <div class="cols">
-    <div>Image</div>
+    <Images {images} />
     <div class="rows">
       <ButtonWrapper />
       <Chart {allData} />
