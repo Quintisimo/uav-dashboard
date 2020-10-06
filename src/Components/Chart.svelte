@@ -1,7 +1,7 @@
 <script lang="ts">
   import Line from 'svelte-chartjs/src/Line.svelte'
   import { active } from './store'
-  import type { Data } from '../typings/data'
+  import type { Data } from '../typings'
   export let allData: Data
 
   $: datasets = (() => {

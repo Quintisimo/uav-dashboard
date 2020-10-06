@@ -5,7 +5,7 @@ import compression from 'compression'
 import * as sapper from '@sapper/server'
 import io, { Socket } from 'socket.io'
 import chokidar from 'chokidar'
-import { DB_FILE } from './server/constants'
+import { DB_FILE, IMAGES_DIR } from './server/constants'
 import { getLatestReadings } from './server/db'
 
 let socket: Socket | null = null
@@ -23,6 +23,7 @@ const app = polka({ server })
 app.use(
   compression({ threshold: 0 }),
   sirv('static', { dev }),
+  sirv(IMAGES_DIR, { dev: true }),
   sapper.middleware()
 )
 

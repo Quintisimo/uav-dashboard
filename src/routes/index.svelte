@@ -12,7 +12,7 @@
   import Readings from '../components/Readings.svelte'
   import Chart from '../components/Chart.svelte'
   import Images from '../components/Images.svelte'
-  import type { DataAndLoc, PreloadData } from '../typings/data'
+  import type { DataAndLoc, PreloadData } from '../typings'
 
   export let preloadData: PreloadData
   let averageData = preloadData.average

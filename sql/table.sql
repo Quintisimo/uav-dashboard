@@ -30,9 +30,3 @@ CREATE TABLE 'Location' (
 	'target'	TEXT NOT NULL CHECK('target' = 'A' or 'target' = 'B'),
 	PRIMARY KEY('id' AUTOINCREMENT)
 );
-
-CREATE TABLE 'Images' (
-	'id'	INTEGER NOT NULL,
-	'image'	BLOB NOT NULL,
-	PRIMARY KEY('id' AUTOINCREMENT)
-);

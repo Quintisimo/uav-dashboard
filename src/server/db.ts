@@ -1,7 +1,6 @@
 import sqlite from 'better-sqlite3'
-import { fromBuffer } from 'file-type'
 import { average, transformObj } from './util'
-import type { Readings, Gas, Location } from '../typings/data'
+import type { Readings, Gas, Location } from '../typings'
 import { DB_FILE } from './constants'
 
 const allAirQualityQuery = `SELECT [target type] AS 'TARGET TYPE', 
@@ -113,25 +112,4 @@ export function getLatestReadings() {
   }
   db.close()
   return data
-}
-
-export async function getAllImages() {
-  const db = sqlite(DB_FILE)
-  const images = `SELECT id, image
-                  FROM  IMAGES`
-
-  const result = db.prepare(images).all()
-  const convertToBase64 = await Promise.all(
-    result.map(async (e) => {
-      const type = await fromBuffer(e.image)
-      const base64 = Buffer.from(e.image).toString('base64')
-
-      return {
-        ...e,
-        image: `data:${type.mime};base64,${base64}`,
-      }
-    })
-  )
-
-  return convertToBase64
 }

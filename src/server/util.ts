@@ -1,4 +1,4 @@
-import type { Gas } from '../typings/data'
+import type { Gas } from '../typings'
 
 export function transformObj(o: Gas | object = {}) {
   return Object.entries(o)

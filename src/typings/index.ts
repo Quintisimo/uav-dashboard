@@ -28,11 +28,6 @@ export interface Location {
   [key: string]: number | 'A' | 'B'
 }
 
-export interface Image {
-  id: number
-  image: string
-}
-
 export interface Data {
   readings: Readings[]
   gas: Gas[]
@@ -46,5 +41,5 @@ export interface PreloadData {
   average: Data
   latest: DataAndLoc
   all: Data
-  images: Image[]
+  images: string[]
 }

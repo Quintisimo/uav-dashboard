@@ -1,6 +1,5 @@
 <script lang="ts">
-  import type { Image } from '../typings/data'
-  export let images: Image[] = []
+  export let images: string[] = []
 </script>
 
 <style>
@@ -20,6 +19,6 @@
 
 <div class="wrapper">
   <div class="images">
-    {#each images as image}<img src={image.image} alt="target" />{/each}
+    {#each images as image}<img src={'/' + image} alt="target" />{/each}
   </div>
 </div>
