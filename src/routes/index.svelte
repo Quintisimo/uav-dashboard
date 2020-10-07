@@ -31,6 +31,10 @@
     }
     latestTarget = data.location[0].target
   })
+
+  socket.on('image', (data: string) => {
+    images = [...images, data]
+  })
 </script>
 
 <style>

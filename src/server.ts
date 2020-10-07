@@ -1,4 +1,5 @@
 import http from 'http'
+import { basename } from 'path'
 import sirv from 'sirv'
 import polka from 'polka'
 import compression from 'compression'
@@ -15,6 +16,10 @@ const dev = NODE_ENV === 'development'
 
 chokidar.watch(DB_FILE).on('change', () => {
   if (socket !== null) socket.emit('row', getLatestReadings())
+})
+
+chokidar.watch(IMAGES_DIR).on('add', (path) => {
+  if (socket !== null) socket.emit('image', basename(path))
 })
 
 const server = http.createServer()
