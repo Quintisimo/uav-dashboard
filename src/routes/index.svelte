@@ -67,14 +67,20 @@
     grid-template-columns: repeat(2, 50%);
   }
 
+  @media (max-width: 1200px) {
+    .cols {
+      grid-template-columns: 100%;
+    }
+  }
+
   .rows {
     display: grid;
     grid-template-rows: 70px 1fr;
   }
 
   @media (max-width: 1200px) {
-    .cols {
-      grid-template-columns: 100%;
+    .rows {
+      grid-template-rows: auto;
     }
   }
 </style>
