@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3'
 import { average, transformObj } from './util'
-import type { Readings, Gas, Location } from '../typings'
+import type { Readings, Gas } from '../typings'
 import { DB_FILE } from './constants'
 
 const allAirQualityQuery = `SELECT [target type] AS 'TARGET TYPE', 
@@ -94,13 +94,6 @@ export function getLatestReadings() {
                     FROM Gas
                     ORDER BY id DESC LIMIT 1`
 
-  const location = `SELECT x AS X, 
-                    y AS Y, 
-                    z AS Z, 
-                    target 
-                    FROM LOCATION 
-                    ORDER BY id DESC LIMIT 1`
-
   const data = {
     readings: [
       db.prepare(latestReadingsA).get(),
@@ -108,7 +101,6 @@ export function getLatestReadings() {
     ].filter(Boolean) as Readings[],
     // TODO: correct type
     gas: transformObj(db.prepare(latestGas).get()) as Gas[],
-    location: [db.prepare(location).get() || {}] as Location[],
   }
   db.close()
   return data

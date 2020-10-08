@@ -12,24 +12,25 @@
   import Readings from '../components/Readings.svelte'
   import Chart from '../components/Chart.svelte'
   import Images from '../components/Images.svelte'
-  import type { DataAndLoc, PreloadData } from '../typings'
+  import Download from '../components/Download.svelte'
+  import type { Data, PreloadData } from '../typings'
 
   export let preloadData: PreloadData
   let averageData = preloadData.average
   let latestData = preloadData.latest
   let allData = preloadData.all
-  let latestTarget = preloadData.latest.location[0].target
+  let latestTarget = ''
   let images = preloadData.images
 
   const socket = io()
 
-  socket.on('row', (data: DataAndLoc) => {
+  socket.on('row', (data: Data) => {
     latestData = data
     allData = {
       readings: [...allData.readings, ...latestData.readings],
       gas: [...allData.gas, ...latestData.gas],
     }
-    latestTarget = data.location[0].target
+    latestTarget = data.readings[0]['TARGET TYPE']
   })
 
   socket.on('image', (data: string) => {
@@ -78,9 +79,6 @@
       title="CURRENT READINGS"
       readings={latestData.readings}
       active={{ 'TARGET TYPE': latestTarget }} />
-    <Readings
-      title="UAV LOCATION (M)"
-      readings={latestData.location}
-      ignore={['target']} />
+    <Download />
   </div>
 </main>

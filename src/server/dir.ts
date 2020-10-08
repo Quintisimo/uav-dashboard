@@ -1,13 +1,7 @@
-import { readdirSync } from 'fs'
-import { IMAGES_DIR, IS_IMAGE } from './constants'
+import { getImages } from './util'
 
-export function getAllImages() {
-  const fileNames = readdirSync(IMAGES_DIR)
-  const images = fileNames
-    .filter((name) => {
-      const ext = name.substring(name.lastIndexOf('.') + 1)
-      return ext.match(IS_IMAGE)
-    })
-    .map((name) => '/' + name)
-  return images
+export async function getAllImages() {
+  const images = await getImages()
+  const urls = images.map((name) => encodeURI('/' + name))
+  return urls
 }

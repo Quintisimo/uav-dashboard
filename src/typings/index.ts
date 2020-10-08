@@ -20,26 +20,14 @@ export interface Gas {
   [key: string]: number
 }
 
-export interface Location {
-  x: number
-  y: number
-  z: number
-  target: 'A' | 'B'
-  [key: string]: number | 'A' | 'B'
-}
-
 export interface Data {
   readings: Readings[]
   gas: Gas[]
 }
 
-export interface DataAndLoc extends Data {
-  location: Location[]
-}
-
 export interface PreloadData {
   average: Data
-  latest: DataAndLoc
+  latest: Data
   all: Data
   images: string[]
 }

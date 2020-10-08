@@ -3,12 +3,13 @@ import { getAllReadings, getLatestReadings } from '../../server/db'
 import { getAllImages } from '../../server/dir'
 import type { PreloadData } from '../../typings'
 
-export function get(_req: ClientRequest, res: ServerResponse) {
+export async function get(_req: ClientRequest, res: ServerResponse) {
+  const images = await getAllImages()
   res.end(
     JSON.stringify({
       ...getAllReadings(),
       latest: getLatestReadings(),
-      images: getAllImages(),
+      images,
     } as PreloadData)
   )
 }

@@ -1,3 +1,5 @@
+import { readdir } from 'fs/promises'
+import { IMAGES_DIR, IS_IMAGE } from './constants'
 import type { Gas } from '../typings'
 
 export function transformObj(o: Gas | object = {}) {
@@ -24,4 +26,14 @@ export function average<G extends Array<numberObj>>(arr: G): G[number] {
     return output
   }
   return {}
+}
+
+export function isImage(name: string) {
+  const ext = name.substring(name.lastIndexOf('.') + 1)
+  return ext.match(IS_IMAGE)
+}
+
+export async function getImages() {
+  const fileNames = await readdir(IMAGES_DIR)
+  return fileNames.filter(isImage)
 }

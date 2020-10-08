@@ -8,6 +8,7 @@ import io, { Socket } from 'socket.io'
 import chokidar from 'chokidar'
 import { DB_FILE, IMAGES_DIR } from './server/constants'
 import { getLatestReadings } from './server/db'
+import { isImage } from './server/util'
 
 let socket: Socket | null = null
 
@@ -19,7 +20,10 @@ chokidar.watch(DB_FILE).on('change', () => {
 })
 
 chokidar.watch(IMAGES_DIR).on('add', (path) => {
-  if (socket !== null) socket.emit('image', '/' + basename(path))
+  const fileName = basename(path)
+  if (socket !== null && isImage(fileName)) {
+    socket.emit('image', encodeURI('/' + fileName))
+  }
 })
 
 const server = http.createServer()
