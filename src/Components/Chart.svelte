@@ -31,7 +31,7 @@
 
 <style>
   div {
-    width: 48vw;
+    width: 49vw;
     margin: auto;
   }
 

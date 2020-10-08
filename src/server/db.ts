@@ -63,24 +63,13 @@ export function getAllReadings() {
 
 export function getLatestReadings() {
   const db = sqlite(DB_FILE)
-  const latestReadingsA = `SELECT [target type] AS 'TARGET TYPE', 
+  const latestReadings = `SELECT [target type] AS 'TARGET TYPE', 
                           temperature AS 'TEMPERATURE', 
                           humidity AS 'HUMIDITY', 
                           light AS 'LIGHT', 
                           noise AS 'NOISE', 
                           pressure AS 'PRESSURE'
                           FROM Readings
-                          WHERE [target type] = 'A'
-                          ORDER BY id DESC LIMIT 1`
-
-  const latestReadingsB = `SELECT [target type] AS 'TARGET TYPE', 
-                          temperature AS 'TEMPERATURE', 
-                          humidity AS 'HUMIDITY', 
-                          light AS 'LIGHT', 
-                          noise AS 'NOISE', 
-                          pressure AS 'PRESSURE' 
-                          FROM Readings
-                          WHERE [target type] = 'B'
                           ORDER BY id DESC LIMIT 1`
 
   const latestGas = `SELECT [carbon monoxide] AS 'CARBON MONOXIDE', 
@@ -95,10 +84,7 @@ export function getLatestReadings() {
                     ORDER BY id DESC LIMIT 1`
 
   const data = {
-    readings: [
-      db.prepare(latestReadingsA).get(),
-      db.prepare(latestReadingsB).get(),
-    ].filter(Boolean) as Readings[],
+    readings: [db.prepare(latestReadings).get()].filter(Boolean) as Readings[],
     // TODO: correct type
     gas: transformObj(db.prepare(latestGas).get()) as Gas[],
   }

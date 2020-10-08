@@ -19,7 +19,7 @@
   let averageData = preloadData.average
   let latestData = preloadData.latest
   let allData = preloadData.all
-  let latestTarget = ''
+  let latestTarget = preloadData.latest.readings[0]['TARGET TYPE']
   let images = preloadData.images
 
   const socket = io()
@@ -55,16 +55,21 @@
 
   .readings {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     justify-items: center;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
     height: 200px;
   }
 
   .cols {
     display: grid;
     grid-template-columns: repeat(2, 50%);
+  }
+
+  .rows {
+    display: grid;
+    grid-template-rows: 70px 1fr;
   }
 
   @media (max-width: 1200px) {
@@ -77,18 +82,21 @@
 <main>
   <div class="cols">
     <Images {images} />
-    <div>
+    <div class="rows">
       <ButtonWrapper />
       <Chart {allData} />
     </div>
   </div>
   <div class="readings">
+    <Readings
+      title="AVERAGE TARGET READINGS"
+      readings={averageData.readings}
+      active={{ 'TARGET TYPE': latestTarget }} />
     <Readings title="GAS LEVELS" readings={latestData.gas} />
-    <Readings title="AVERAGE TARGET READINGS" readings={averageData.readings} />
     <Readings
       title="CURRENT READINGS"
       readings={latestData.readings}
-      active={{ 'TARGET TYPE': latestTarget }} />
-    <Download />
+      ignore={['TARGET TYPE']} />
   </div>
+  <Download />
 </main>
