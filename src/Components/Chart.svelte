@@ -34,6 +34,13 @@
     width: 48vw;
     margin: auto;
   }
+
+  @media (max-width: 1200px) {
+    div {
+      width: 90vw;
+      margin: 20px auto;
+    }
+  }
 </style>
 
 <div>

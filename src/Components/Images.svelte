@@ -13,16 +13,17 @@
 </script>
 
 <style>
-  img {
-    height: inherit;
-    box-sizing: border-box;
-  }
-
   #wrapper {
     display: grid;
     grid-template-rows: 1fr 80px;
     gap: 5px;
     margin: 10px 0;
+  }
+
+  @media (max-width: 1200px) {
+    #wrapper {
+      height: 50vw;
+    }
   }
 
   #active {
@@ -47,6 +48,8 @@
 
   #images > img {
     cursor: pointer;
+    height: inherit;
+    box-sizing: border-box;
   }
 
   #images::-webkit-scrollbar {

@@ -2,7 +2,7 @@
   div {
     height: inherit;
     display: grid;
-    grid-template-rows: repeat(1fr, 2);
+    grid-template-rows: repeat(2, 1fr);
   }
 
   a {

@@ -9,6 +9,16 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 10px 10px;
   }
+
+  @media (max-width: 1200px) {
+    div {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    span {
+      display: none;
+    }
+  }
 </style>
 
 <div>
