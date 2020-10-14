@@ -1,5 +1,5 @@
 import sqlite from 'better-sqlite3'
-import { average, transformObj } from './util'
+import { average } from './util'
 import type { Readings, Gas } from '../typings'
 import { DB_FILE } from './constants'
 
@@ -8,7 +8,7 @@ const allAirQualityQuery = `SELECT temperature AS 'TEMPERATURE',
                           light AS 'LIGHT', 
                           noise AS 'NOISE', 
                           pressure AS 'PRESSURE'
-                          FROM Readings`
+                          FROM envdata`
 
 const allGasQuery = `SELECT red as 'RED', 
                     ox as 'OX',
@@ -38,13 +38,10 @@ export function getAllReadings() {
   // const averageTypeA = { 'TARGET TYPE': 'A', ...average(getAirQuality('A')) }
   // const averageTypeB = { 'TARGET TYPE': 'B', ...average(getAirQuality('B')) }
 
-  const averageGas = average(allGas)
-
   const data = {
     average: {
-      readings: [average(allAirQuality)] as Readings[],
-      // TODO: correct type
-      gas: transformObj(averageGas) as Gas[],
+      readings: [average(allAirQuality)].filter(Boolean) as Readings[],
+      gas: [average(allGas)].filter(Boolean) as Gas[],
     },
     all: {
       readings: allAirQuality,
@@ -62,7 +59,7 @@ export function getLatestReadings() {
                           light AS 'LIGHT', 
                           noise AS 'NOISE', 
                           pressure AS 'PRESSURE'
-                          FROM Readings
+                          FROM envdata
                           ORDER BY id DESC LIMIT 1`
 
   const latestGas = `SELECT red AS 'RED', 

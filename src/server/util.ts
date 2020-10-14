@@ -1,15 +1,5 @@
 import { readdir } from 'fs-extra'
 import { IMAGES_DIR, IS_IMAGE } from './constants'
-import type { Gas } from '../typings'
-
-export function transformObj(o: Gas | object = {}) {
-  return Object.entries(o)
-    .reduce<[string, number][][]>(
-      (acc, _, i, self) => (i % 4 ? acc : [...acc, self.slice(i, i + 4)]),
-      []
-    )
-    .map((e) => e.reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {}))
-}
 
 type numberObj = { [k: string]: number }
 

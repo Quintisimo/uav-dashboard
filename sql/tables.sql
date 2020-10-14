@@ -1,0 +1,17 @@
+CREATE TABLE 'envdata' (
+	'id'	INTEGER NOT NULL,
+	'temperature'	REAL NOT NULL,
+	'humidity'	REAL NOT NULL,
+	'light'	REAL NOT NULL,
+	'noise'	REAL NOT NULL,
+	'pressure'	REAL NOT NULL,
+	PRIMARY KEY('id' AUTOINCREMENT)
+);
+
+CREATE TABLE 'gas' (
+	'id'	INTEGER NOT NULL,
+	'red' REAL NOT NULL,
+	'ox' REAL NOT NULL,
+	'nh3' REAL NOT NULL,
+	PRIMARY KEY('id' AUTOINCREMENT)
+);
