@@ -1,4 +1,4 @@
-import { readdir, readFile } from 'fs/promises'
+import { readdir, readFile } from 'fs-extra'
 import { join } from 'path'
 import JSZip from 'jszip'
 import { IMAGES_DIR, IS_IMAGE } from '../../server/constants'

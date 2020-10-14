@@ -1,4 +1,4 @@
-import { readdir } from 'fs/promises'
+import { readdir } from 'fs-extra'
 import { IMAGES_DIR, IS_IMAGE } from './constants'
 import type { Gas } from '../typings'
 
