@@ -2,6 +2,7 @@
   export let title: string
   export let readings: { [key: string]:  number }[] = []
   export let ignore: string[] = []
+  export let units: { [key: string]:  string } = {}
 </script>
 
 <style>
@@ -42,7 +43,7 @@
       <div>
         {#each Object.entries(reading) as [title, value]}
           {#if !ignore.includes(title)}
-            <p>{title} - {value}</p>
+            <p>{title} - {value} {units[title] ?? ''}</p>
           {/if}
         {/each}
       </div>

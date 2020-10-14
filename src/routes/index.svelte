@@ -16,6 +16,15 @@
   import type { Data, PreloadData } from '../typings'
 
   export let preloadData: PreloadData
+
+  const units = {
+    TEMPERATURE: 'C',
+    HUMIDITY: '%',
+    LIGHT: 'Lux',
+    NOISE: 'Dec',
+    PRESSURE: 'HPa',
+  }
+
   let averageData = preloadData.average
   let latestData = preloadData.latest
   let allData = preloadData.all
@@ -62,6 +71,7 @@
 
   .cols {
     display: grid;
+    grid-template-columns: 0 100%;
     grid-template-columns: repeat(2, 50%);
   }
 
@@ -95,12 +105,9 @@
     <Readings
       title="AVERAGE TARGET READINGS"
       readings={averageData.readings}
-     />
+      {units} />
     <Readings title="GAS LEVELS" readings={latestData.gas} />
-    <Readings
-      title="CURRENT READINGS"
-      readings={latestData.readings}
-      ignore={['TARGET TYPE']} />
+    <Readings title="CURRENT READINGS" readings={latestData.readings} {units} />
   </div>
   <Download />
 </main>

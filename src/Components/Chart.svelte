@@ -30,6 +30,14 @@
       return []
     }
   })()
+
+  $: labels = (() => {
+    if ($active !== 'GAS') {
+      return Array.from({ length: allData.readings.length }, (_, i) => i)
+    } else {
+      return Array.from({ length: allData.gas.length }, (_, i) => i)
+    }
+  })()
 </script>
 
 <style>
@@ -48,6 +56,6 @@
 
 <div>
   <Line
-    data={{ datasets }}
+    data={{ datasets, labels }}
     options={{ responsive: true, maintainAspecRatio: false }} />
 </div>
