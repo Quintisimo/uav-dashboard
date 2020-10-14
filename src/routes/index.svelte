@@ -19,7 +19,6 @@
   let averageData = preloadData.average
   let latestData = preloadData.latest
   let allData = preloadData.all
-  let latestTarget = preloadData.latest.readings[0]['TARGET TYPE']
   let images = preloadData.images
 
   const socket = io()
@@ -30,7 +29,6 @@
       readings: [...allData.readings, ...latestData.readings],
       gas: [...allData.gas, ...latestData.gas],
     }
-    latestTarget = data.readings[0]['TARGET TYPE']
   })
 
   socket.on('image', (data: string) => {
@@ -97,7 +95,7 @@
     <Readings
       title="AVERAGE TARGET READINGS"
       readings={averageData.readings}
-      active={{ 'TARGET TYPE': latestTarget }} />
+     />
     <Readings title="GAS LEVELS" readings={latestData.gas} />
     <Readings
       title="CURRENT READINGS"

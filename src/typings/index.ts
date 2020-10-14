@@ -1,22 +1,24 @@
 export type Readings = {
-  'TARGET TYPE': 'A' | 'B'
   TEMPERATURE: number
   HUMIDITY: number
   LIGHT: number
   NOISE: number
   PRESSURE: number
-  [key: string]: number | 'A' | 'B'
+  [key: string]: number
 }
 
 export interface Gas {
-  'CARBON MONOXIDE': number
-  'NITROGEN DIOXIDE': number
-  ETHANOL: number
-  HYDROGEN: number
-  PROPANE: number
-  'ISO-BUTANE': number
-  AMMONIA: number
-  METHANE: number
+  // 'CARBON MONOXIDE': number
+  // 'NITROGEN DIOXIDE': number
+  // ETHANOL: number
+  // HYDROGEN: number
+  // PROPANE: number
+  // 'ISO-BUTANE': number
+  // AMMONIA: number
+  // METHANE: number
+  red: number
+  ox: number
+  nh3: number
   [key: string]: number
 }
 
