@@ -7,7 +7,7 @@ export async function get(_req: ClientRequest, res: ServerResponse) {
   const images = await getAllImages()
   res.end(
     JSON.stringify({
-      ...getAllReadings(),
+      all: getAllReadings(),
       latest: getLatestReadings(),
       images,
     } as PreloadData)

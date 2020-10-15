@@ -13,7 +13,7 @@
   import Chart from '../components/Chart.svelte'
   import Images from '../components/Images.svelte'
   import Download from '../components/Download.svelte'
-  import type { Data, PreloadData } from '../typings'
+  import type { Data, EnvData, Gas, numberObj, PreloadData } from '../typings'
 
   export let preloadData: PreloadData
 
@@ -25,9 +25,34 @@
     PRESSURE: 'HPa',
   }
 
-  let averageData = preloadData.average
+  function average<G extends Array<numberObj>>(arr: G): G[number] {
+    if (arr.length) {
+      const keys = Object.keys(arr[0])
+      let output: numberObj = {}
+
+      for (const key of keys) {
+        output[key] = Math.round(
+          arr.map((e) => e[key]).reduce((prev, cur) => prev + cur, 0) /
+            arr.length
+        )
+      }
+      return output
+    }
+    return {}
+  }
+
+  const removeTime = (e: Gas | EnvData) => {
+    const temp = { ...e }
+    delete temp.time
+    return temp as numberObj
+  }
+
   let latestData = preloadData.latest
   let allData = preloadData.all
+  let averageData = {
+    readings: [average(allData.readings.map(removeTime) as numberObj[])],
+    gas: [average(allData.gas.map(removeTime) as numberObj[])],
+  }
   let images = preloadData.images
 
   const socket = io()
@@ -37,6 +62,10 @@
     allData = {
       readings: [...allData.readings, ...latestData.readings],
       gas: [...allData.gas, ...latestData.gas],
+    }
+    averageData = {
+      readings: [average(allData.readings.map(removeTime) as numberObj[])],
+      gas: [average(allData.gas.map(removeTime) as numberObj[])],
     }
   })
 
@@ -106,8 +135,12 @@
       title="AVERAGE TARGET READINGS"
       readings={averageData.readings}
       {units} />
-    <Readings title="GAS LEVELS" readings={latestData.gas} />
-    <Readings title="CURRENT READINGS" readings={latestData.readings} {units} />
+    <Readings title="GAS LEVELS" readings={latestData.gas} ignore={['time']} />
+    <Readings
+      title="CURRENT READINGS"
+      readings={latestData.readings}
+      {units}
+      ignore={['time']} />
   </div>
   <Download />
 </main>

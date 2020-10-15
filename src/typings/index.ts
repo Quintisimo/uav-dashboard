@@ -22,7 +22,6 @@ export interface Data {
 }
 
 export interface PreloadData {
-  average: Data
   latest: Data
   all: Data
   images: string[]

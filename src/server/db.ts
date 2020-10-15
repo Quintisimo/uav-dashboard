@@ -1,7 +1,6 @@
 import sqlite from 'better-sqlite3'
-import { average } from './util'
 import { DB_FILE } from './constants'
-import type { EnvData, Gas, numberObj } from '../typings'
+import type { EnvData, Gas } from '../typings'
 
 const allAirQualityQuery = `SELECT temperature AS 'TEMPERATURE', 
                           humidity AS 'HUMIDITY', 
@@ -22,12 +21,6 @@ export function getAllReadings() {
   const allAirQuality = db.prepare(allAirQualityQuery).all() as EnvData[]
   const allGas = db.prepare(allGasQuery).all() as Gas[]
 
-  const removeTime = (e: Gas | EnvData) => {
-    const temp = { ...e }
-    delete temp.time
-    return temp as numberObj
-  }
-
   // const getAirQuality = (type: 'A' | 'B') =>
   //   allAirQuality
   //     .filter((e) => e['TARGET TYPE'] === type)
@@ -47,16 +40,14 @@ export function getAllReadings() {
   // const averageTypeB = { 'TARGET TYPE': 'B', ...average(getAirQuality('B')) }
 
   const data = {
-    average: {
-      readings: [average(allAirQuality.map(removeTime))].filter(
-        Boolean
-      ) as EnvData[],
-      gas: [average(allGas.map(removeTime))].filter(Boolean) as Gas[],
-    },
-    all: {
-      readings: allAirQuality,
-      gas: allGas,
-    },
+    // average: {
+    //   readings: [average(allAirQuality.map(removeTime))].filter(
+    //     Boolean
+    //   ) as EnvData[],
+    //   gas: [average(allGas.map(removeTime))].filter(Boolean) as Gas[],
+    // },
+    readings: allAirQuality,
+    gas: allGas,
   }
   db.close()
   return data
