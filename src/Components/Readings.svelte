@@ -43,7 +43,7 @@
       <div>
         {#each Object.entries(reading) as [title, value]}
           {#if !ignore.includes(title)}
-            <p>{title} - {value} {units[title] ?? ''}</p>
+            <p>{title} - {value} {units[title] || ''}</p>
           {/if}
         {/each}
       </div>
