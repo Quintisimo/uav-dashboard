@@ -10,6 +10,37 @@
       behavior: 'smooth',
     })
   }
+
+  function observer(node: HTMLDivElement) {
+    const observer = new IntersectionObserver(
+      (entries, self) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = entry.target as HTMLImageElement
+            img.src = img.dataset.src
+            self.unobserve(entry.target)
+          }
+        })
+      },
+      {
+        root: node,
+      }
+    )
+
+    Array.from(node.children).forEach((e) => {
+      observer.observe(e)
+    })
+
+    node.addEventListener('DOMNodeInserted', (e) => {
+      observer.observe(e.target as Element)
+    })
+
+    return {
+      destroy() {
+        observer.disconnect()
+      },
+    }
+  }
 </script>
 
 <style>
@@ -82,14 +113,15 @@
   <img src={active} alt="selected" id="active" />
   <div id="images-row">
     <button class="arrow" id="left" on:click={() => scroll('right')} />
-    <div id="images">
+    <div id="images" use:observer>
       {#each images as image}
         <img
           class:highlight={active === image}
-          src={image}
+          data-src={image}
           alt={image.substring(1, image.lastIndexOf('.'))}
-          on:click={() => (active = image)}
-          loading="lazy" />
+          on:click={() => {
+            active = image
+          }} />
       {/each}
     </div>
     <button id="right" class="arrow" on:click={() => scroll('left')} />
