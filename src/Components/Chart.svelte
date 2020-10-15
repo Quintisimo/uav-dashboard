@@ -18,14 +18,16 @@
       ]
     } else {
       if (allData.gas.length) {
-        return Object.keys(allData.gas[0]).map((gas) => ({
-          label: gas,
-          data: allData.gas.map((e) => e[gas]),
-          borderColor: `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
-            Math.random() * 255
-          )}, ${Math.floor(Math.random() * 255)})`,
-          fill: false,
-        }))
+        return Object.keys(allData.gas[0])
+          .filter((key) => key !== 'time')
+          .map((gas) => ({
+            label: gas,
+            data: allData.gas.map((e) => e[gas]),
+            borderColor: `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
+              Math.random() * 255
+            )}, ${Math.floor(Math.random() * 255)})`,
+            fill: false,
+          }))
       }
       return []
     }

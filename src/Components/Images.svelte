@@ -93,7 +93,8 @@
           class:highlight={active === image}
           src={image}
           alt={image.substring(1, image.lastIndexOf('.'))}
-          on:click={() => (active = image)} />
+          on:click={() => (active = image)}
+          loading="lazy" />
       {/each}
     </div>
     <button id="right" class="arrow" on:click={() => scroll('left')} />
