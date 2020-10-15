@@ -1,8 +1,8 @@
 <script lang="ts">
   export let title: string
-  export let readings: { [key: string]:  number }[] = []
+  export let readings: { [key: string]: number | string }[] = []
   export let ignore: string[] = []
-  export let units: { [key: string]:  string } = {}
+  export let units: { [key: string]: string } = {}
 </script>
 
 <style>

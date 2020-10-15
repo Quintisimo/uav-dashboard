@@ -1,29 +1,23 @@
-export type Readings = {
+export interface EnvData {
   TEMPERATURE: number
   HUMIDITY: number
   LIGHT: number
   NOISE: number
   PRESSURE: number
-  [key: string]: number
+  time: string
+  [key: string]: number | string
 }
 
 export interface Gas {
-  // 'CARBON MONOXIDE': number
-  // 'NITROGEN DIOXIDE': number
-  // ETHANOL: number
-  // HYDROGEN: number
-  // PROPANE: number
-  // 'ISO-BUTANE': number
-  // AMMONIA: number
-  // METHANE: number
   red: number
   ox: number
   nh3: number
-  [key: string]: number
+  time: string
+  [key: string]: number | string
 }
 
 export interface Data {
-  readings: Readings[]
+  readings: EnvData[]
   gas: Gas[]
 }
 
@@ -33,3 +27,5 @@ export interface PreloadData {
   all: Data
   images: string[]
 }
+
+export type numberObj = { [k: string]: number }

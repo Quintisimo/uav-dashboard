@@ -1,24 +1,32 @@
 import sqlite from 'better-sqlite3'
 import { average } from './util'
-import type { Readings, Gas } from '../typings'
 import { DB_FILE } from './constants'
+import type { EnvData, Gas, numberObj } from '../typings'
 
 const allAirQualityQuery = `SELECT temperature AS 'TEMPERATURE', 
                           humidity AS 'HUMIDITY', 
                           light AS 'LIGHT', 
                           noise AS 'NOISE', 
-                          pressure AS 'PRESSURE'
+                          pressure AS 'PRESSURE',
+                          time
                           FROM envdata`
 
 const allGasQuery = `SELECT red as 'RED', 
                     ox as 'OX',
-                    nh3 as 'NH3'
+                    nh3 as 'NH3',
+                    time
                     FROM Gas`
 
 export function getAllReadings() {
   const db = sqlite(DB_FILE)
-  const allAirQuality = db.prepare(allAirQualityQuery).all() as Readings[]
+  const allAirQuality = db.prepare(allAirQualityQuery).all() as EnvData[]
   const allGas = db.prepare(allGasQuery).all() as Gas[]
+
+  const removeTime = (e: Gas | EnvData) => {
+    const temp = { ...e }
+    delete temp.time
+    return temp as numberObj
+  }
 
   // const getAirQuality = (type: 'A' | 'B') =>
   //   allAirQuality
@@ -40,8 +48,10 @@ export function getAllReadings() {
 
   const data = {
     average: {
-      readings: [average(allAirQuality)].filter(Boolean) as Readings[],
-      gas: [average(allGas)].filter(Boolean) as Gas[],
+      readings: [average(allAirQuality.map(removeTime))].filter(
+        Boolean
+      ) as EnvData[],
+      gas: [average(allGas.map(removeTime))].filter(Boolean) as Gas[],
     },
     all: {
       readings: allAirQuality,
@@ -58,18 +68,20 @@ export function getLatestReadings() {
                           humidity AS 'HUMIDITY', 
                           light AS 'LIGHT', 
                           noise AS 'NOISE', 
-                          pressure AS 'PRESSURE'
+                          pressure AS 'PRESSURE',
+                          time
                           FROM envdata
                           ORDER BY id DESC LIMIT 1`
 
   const latestGas = `SELECT red AS 'RED', 
                     ox AS 'OX', 
-                    nh3 as 'NH3'
+                    nh3 as 'NH3',
+                    time
                     FROM Gas
                     ORDER BY id DESC LIMIT 1`
 
   const data = {
-    readings: [db.prepare(latestReadings).get()].filter(Boolean) as Readings[],
+    readings: [db.prepare(latestReadings).get()].filter(Boolean) as EnvData[],
     gas: [db.prepare(latestGas).get()].filter(Boolean) as Gas[],
   }
   db.close()

@@ -33,9 +33,9 @@
 
   $: labels = (() => {
     if ($active !== 'GAS') {
-      return Array.from({ length: allData.readings.length }, (_, i) => i)
+      return allData.readings.map((item) => new Date(item.time))
     } else {
-      return Array.from({ length: allData.gas.length }, (_, i) => i)
+      return allData.gas.map((item) => new Date(item.time))
     }
   })()
 </script>
@@ -57,5 +57,5 @@
 <div>
   <Line
     data={{ datasets, labels }}
-    options={{ responsive: true, maintainAspecRatio: false }} />
+    options={{ responsive: true, maintainAspecRatio: false, scales: { xAxes: [{ type: 'time', time: { unit: 'minute' } }] } }} />
 </div>

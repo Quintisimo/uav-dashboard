@@ -1,7 +1,6 @@
 import { readdir } from 'fs-extra'
 import { IMAGES_DIR, IS_IMAGE } from './constants'
-
-type numberObj = { [k: string]: number }
+import type { numberObj } from '../typings'
 
 export function average<G extends Array<numberObj>>(arr: G): G[number] {
   if (arr.length) {
