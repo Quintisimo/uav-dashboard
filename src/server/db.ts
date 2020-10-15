@@ -71,8 +71,17 @@ export function getLatestReadings() {
                     FROM Gas
                     ORDER BY id DESC LIMIT 1`
 
+  const latestMarker = `SELECT markerid as 'MARKER ID'
+                        FROM ARUCO
+                        ORDER BY id DESC LIMIT 1`
+
   const data = {
-    readings: [db.prepare(latestReadings).get()].filter(Boolean) as EnvData[],
+    readings: [
+      {
+        ...db.prepare(latestReadings).get(),
+        ...db.prepare(latestMarker).get(),
+      },
+    ].filter(Boolean) as EnvData[],
     gas: [db.prepare(latestGas).get()].filter(Boolean) as Gas[],
   }
   db.close()

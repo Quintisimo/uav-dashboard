@@ -5,6 +5,7 @@ export interface EnvData {
   NOISE: number
   PRESSURE: number
   time: string
+  marker: number
   [key: string]: number | string
 }
 

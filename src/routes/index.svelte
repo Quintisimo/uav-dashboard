@@ -41,17 +41,18 @@
     return {}
   }
 
-  const removeTime = (e: Gas | EnvData) => {
+  const removeKey = (e: Gas | EnvData) => {
     const temp = { ...e }
     delete temp.time
+    delete temp.marker
     return temp as numberObj
   }
 
   let latestData = preloadData.latest
   let allData = preloadData.all
   let averageData = {
-    readings: [average(allData.readings.map(removeTime) as numberObj[])],
-    gas: [average(allData.gas.map(removeTime) as numberObj[])],
+    readings: [average(allData.readings.map(removeKey) as numberObj[])],
+    gas: [average(allData.gas.map(removeKey) as numberObj[])],
   }
   let images = preloadData.images
 
@@ -64,8 +65,8 @@
       gas: [...allData.gas, ...latestData.gas],
     }
     averageData = {
-      readings: [average(allData.readings.map(removeTime) as numberObj[])],
-      gas: [average(allData.gas.map(removeTime) as numberObj[])],
+      readings: [average(allData.readings.map(removeKey) as numberObj[])],
+      gas: [average(allData.gas.map(removeKey) as numberObj[])],
     }
   })
 
