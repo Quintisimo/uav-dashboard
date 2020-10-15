@@ -20,15 +20,10 @@
     margin: 10px 0;
   }
 
-  @media (max-width: 1200px) {
-    #wrapper {
-      height: 50vw;
-    }
-  }
-
   #active {
     display: block;
     margin: auto;
+    width: 80%;
   }
 
   #images-row {
