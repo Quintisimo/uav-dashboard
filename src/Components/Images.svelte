@@ -1,7 +1,7 @@
 <script lang="ts">
   export let images: string[] = []
 
-  $: active = images[0]
+  let active: string | null = null
 
   function scroll(direction: 'left' | 'right') {
     const images = document.querySelector('#images')
