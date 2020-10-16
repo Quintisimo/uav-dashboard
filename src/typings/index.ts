@@ -5,7 +5,6 @@ export interface EnvData {
   NOISE: number
   PRESSURE: number
   time: string
-  marker: number
   [key: string]: number | string
 }
 
@@ -17,13 +16,22 @@ export interface Gas {
   [key: string]: number | string
 }
 
-export interface Data {
+interface Image {
+  'MARKER ID': number
+  [key: string]: number
+}
+
+interface Data {
   readings: EnvData[]
   gas: Gas[]
 }
 
+export interface LatestData extends Data {
+  image: Image[]
+}
+
 export interface PreloadData {
-  latest: Data
+  latest: LatestData
   all: Data
   images: string[]
 }

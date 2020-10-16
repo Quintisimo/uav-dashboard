@@ -1,6 +1,6 @@
 import sqlite from 'better-sqlite3'
 import { DB_FILE } from './constants'
-import type { EnvData, Gas } from '../typings'
+import type { EnvData, Gas, LatestData } from '../typings'
 
 const allAirQualityQuery = `SELECT temperature AS 'TEMPERATURE', 
                           humidity AS 'HUMIDITY', 
@@ -21,31 +21,7 @@ export function getAllReadings() {
   const allAirQuality = db.prepare(allAirQualityQuery).all() as EnvData[]
   const allGas = db.prepare(allGasQuery).all() as Gas[]
 
-  // const getAirQuality = (type: 'A' | 'B') =>
-  //   allAirQuality
-  //     .filter((e) => e['TARGET TYPE'] === type)
-  //     .map((e) =>
-  //       Object.keys(e).reduce((prev, cur) => {
-  //         if (cur !== 'TARGET TYPE') {
-  //           return {
-  //             ...prev,
-  //             [cur]: e[cur],
-  //           }
-  //         }
-  //         return prev
-  //       }, {})
-  //     )
-
-  // const averageTypeA = { 'TARGET TYPE': 'A', ...average(getAirQuality('A')) }
-  // const averageTypeB = { 'TARGET TYPE': 'B', ...average(getAirQuality('B')) }
-
   const data = {
-    // average: {
-    //   readings: [average(allAirQuality.map(removeTime))].filter(
-    //     Boolean
-    //   ) as EnvData[],
-    //   gas: [average(allGas.map(removeTime))].filter(Boolean) as Gas[],
-    // },
     readings: allAirQuality,
     gas: allGas,
   }
@@ -76,14 +52,10 @@ export function getLatestReadings() {
                         ORDER BY id DESC LIMIT 1`
 
   const data = {
-    readings: [
-      {
-        ...db.prepare(latestReadings).get(),
-        ...db.prepare(latestMarker).get(),
-      },
-    ].filter(Boolean) as EnvData[],
-    gas: [db.prepare(latestGas).get()].filter(Boolean) as Gas[],
-  }
+    readings: [db.prepare(latestReadings).get()].filter(Boolean),
+    gas: [db.prepare(latestGas).get()].filter(Boolean),
+    image: [db.prepare(latestMarker).get()].filter(Boolean),
+  } as LatestData
   db.close()
   return data
 }

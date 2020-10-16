@@ -13,7 +13,7 @@
   import Chart from '../components/Chart.svelte'
   import Images from '../components/Images.svelte'
   import Download from '../components/Download.svelte'
-  import type { Data, EnvData, Gas, Obj, PreloadData } from '../typings'
+  import type { EnvData, Gas, Obj, PreloadData, LatestData } from '../typings'
 
   export let preloadData: PreloadData
 
@@ -50,7 +50,7 @@
 
   const socket = io()
 
-  socket.on('row', (data: Data) => {
+  socket.on('row', (data: LatestData) => {
     latestData = data
     allData = {
       readings: [...allData.readings, ...latestData.readings],
@@ -84,7 +84,7 @@
 
   .readings {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     justify-items: center;
     align-items: center;
     gap: 20px;
@@ -130,6 +130,7 @@
       title="CURRENT READINGS"
       readings={latestData.readings}
       ignore={['time']} />
+    <Readings title="IMAGE DETECTION" readings={latestData.image} />
   </div>
   <Download />
 </main>
