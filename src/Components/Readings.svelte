@@ -1,8 +1,18 @@
+<script context="module" lang="ts">
+  import type { Obj } from '../typings'
+  const units: Obj<string> = {
+    TEMPERATURE: 'C',
+    HUMIDITY: '%',
+    LIGHT: 'Lux',
+    NOISE: 'Dec',
+    PRESSURE: 'HPa',
+  }
+</script>
+
 <script lang="ts">
   export let title: string
-  export let readings: { [key: string]: number | string }[] = []
+  export let readings: Obj<string | number>[] = []
   export let ignore: string[] = []
-  export let units: { [key: string]: string } = {}
 </script>
 
 <style>

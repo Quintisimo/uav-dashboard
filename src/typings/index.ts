@@ -10,9 +10,9 @@ export interface EnvData {
 }
 
 export interface Gas {
-  red: number
-  ox: number
-  nh3: number
+  RED: number
+  OX: number
+  NH3: number
   time: string
   [key: string]: number | string
 }
@@ -28,4 +28,4 @@ export interface PreloadData {
   images: string[]
 }
 
-export type numberObj = { [k: string]: number }
+export type Obj<V> = { [k: string]: V }

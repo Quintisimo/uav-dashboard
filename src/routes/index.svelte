@@ -13,22 +13,14 @@
   import Chart from '../components/Chart.svelte'
   import Images from '../components/Images.svelte'
   import Download from '../components/Download.svelte'
-  import type { Data, EnvData, Gas, numberObj, PreloadData } from '../typings'
+  import type { Data, EnvData, Gas, Obj, PreloadData } from '../typings'
 
   export let preloadData: PreloadData
 
-  const units = {
-    TEMPERATURE: 'C',
-    HUMIDITY: '%',
-    LIGHT: 'Lux',
-    NOISE: 'Dec',
-    PRESSURE: 'HPa',
-  }
-
-  function average<G extends Array<numberObj>>(arr: G): G[number] {
+  function average<G extends Array<Obj<number>>>(arr: G): G[number] {
     if (arr.length) {
       const keys = Object.keys(arr[0])
-      let output: numberObj = {}
+      let output: Obj<number> = {}
 
       for (const key of keys) {
         output[key] = Math.round(
@@ -45,14 +37,14 @@
     const temp = { ...e }
     delete temp.time
     delete temp.marker
-    return temp as numberObj
+    return temp as Obj<number>
   }
 
   let latestData = preloadData.latest
   let allData = preloadData.all
   let averageData = {
-    readings: [average(allData.readings.map(removeKey) as numberObj[])],
-    gas: [average(allData.gas.map(removeKey) as numberObj[])],
+    readings: [average(allData.readings.map(removeKey) as Obj<number>[])],
+    gas: [average(allData.gas.map(removeKey) as Obj<number>[])],
   }
   let images = preloadData.images
 
@@ -65,8 +57,8 @@
       gas: [...allData.gas, ...latestData.gas],
     }
     averageData = {
-      readings: [average(allData.readings.map(removeKey) as numberObj[])],
-      gas: [average(allData.gas.map(removeKey) as numberObj[])],
+      readings: [average(allData.readings.map(removeKey) as Obj<number>[])],
+      gas: [average(allData.gas.map(removeKey) as Obj<number>[])],
     }
   })
 
@@ -132,15 +124,11 @@
     </div>
   </div>
   <div class="readings">
-    <Readings
-      title="AVERAGE TARGET READINGS"
-      readings={averageData.readings}
-      {units} />
+    <Readings title="AVERAGE TARGET READINGS" readings={averageData.readings} />
     <Readings title="GAS LEVELS" readings={latestData.gas} ignore={['time']} />
     <Readings
       title="CURRENT READINGS"
       readings={latestData.readings}
-      {units}
       ignore={['time']} />
   </div>
   <Download />
