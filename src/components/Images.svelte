@@ -31,13 +31,16 @@
       observer.observe(e)
     })
 
-    node.addEventListener('DOMNodeInserted', (e) => {
+    const addObserver = (e: Event) => {
       observer.observe(e.target as Element)
-    })
+    }
+
+    node.addEventListener('DOMNodeInserted', addObserver)
 
     return {
       destroy() {
         observer.disconnect()
+        node.removeEventListener('DOMNodeInserted', addObserver)
       },
     }
   }
