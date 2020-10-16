@@ -51,10 +51,16 @@ export function getLatestReadings() {
                         FROM ARUCO
                         ORDER BY id DESC LIMIT 1`
 
+  const latestTarget = `SELECT targettype as 'TARGET TYPE'
+                        FROM TARGETS
+                        ORDER BY id DESC LIMIT 1`
+
   const data = {
     readings: [db.prepare(latestReadings).get()].filter(Boolean),
     gas: [db.prepare(latestGas).get()].filter(Boolean),
-    image: [db.prepare(latestMarker).get()].filter(Boolean),
+    image: [
+      { ...db.prepare(latestMarker).get(), ...db.prepare(latestTarget).get() },
+    ].filter(Boolean),
   } as LatestData
   db.close()
   return data

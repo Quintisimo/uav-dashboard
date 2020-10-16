@@ -36,7 +36,6 @@
   const removeKey = (e: Gas | EnvData) => {
     const temp = { ...e }
     delete temp.time
-    delete temp.marker
     return temp as Obj<number>
   }
 
